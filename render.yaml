@@ -1,0 +1,29 @@
+# Push this folder's CONTENTS to the root of a dedicated Git repository.
+services:
+  - type: web
+    name: gj-bot-python
+    runtime: python
+    plan: starter
+    numInstances: 1
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py run --host 0.0.0.0
+    healthCheckPath: /healthz
+    disk:
+      name: gj-bot-state
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
+      - key: GJ_DATA_DIR
+        value: /var/data/gj-bot
+      - key: GJ_SECURE_COOKIE
+        value: "true"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: GJ_EMAIL
+        sync: false
+      - key: GJ_PASSWORD
+        sync: false
